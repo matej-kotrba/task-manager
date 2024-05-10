@@ -1,12 +1,16 @@
 import { relations, sql } from "drizzle-orm";
 import {
+  boolean,
+  date,
   index,
   integer,
   pgTableCreator,
   primaryKey,
   serial,
   text,
+  time,
   timestamp,
+  uuid,
   varchar,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
@@ -37,6 +41,15 @@ export const posts = createTable(
     nameIndex: index("name_idx").on(example.name),
   })
 );
+
+export const task = createTable("task", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  isCompleted: boolean("completed").default(false),
+  scheduledFinishedDate: date("scheduledFinishedDate").notNull(),
+  scheduledFinishedTime: time("scheduledFinishedTime", { withTimezone: true }),
+})
 
 export const users = createTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
