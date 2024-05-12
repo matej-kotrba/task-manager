@@ -31,7 +31,6 @@ export async function onNewTaskSubmit(formData: FormData): Promise<OnNewTaskSubm
     scheduledFinishedTime: validation.data.scheduledFinishedTime,
   })
 
-
   return {
     success: true,
     errors: []

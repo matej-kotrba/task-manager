@@ -48,7 +48,7 @@ export const task = createTable("task", {
   description: text("description"),
   isCompleted: boolean("completed").default(false),
   scheduledFinishedDate: date("scheduledFinishedDate").notNull(),
-  scheduledFinishedTime: time("scheduledFinishedTime", { withTimezone: true }),
+  scheduledFinishedTime: time("scheduledFinishedTime").notNull(),
 })
 
 export const users = createTable("user", {
