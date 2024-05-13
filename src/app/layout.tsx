@@ -1,6 +1,7 @@
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "~/styles/globals.css";
+import { CalendarRange, ListChecks } from "lucide-react";
 
 import { Inter } from "next/font/google";
 
@@ -32,7 +33,31 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider>
-          <MantineProvider theme={theme}>{children}</MantineProvider>
+          <MantineProvider theme={theme}>
+            <header>
+              <nav className="bg-blue-500 px-8 py-4">
+                <ul className="flex gap-4 text-2xl font-medium text-white">
+                  <li
+                    className="relative flex items-center gap-1 before:absolute before:bottom-0 before:left-0 before:h-[2px]
+                   before:w-full before:origin-right before:scale-x-0 before:bg-white before:transition-transform before:duration-150 before:content-['']
+                    hover:text-gray-100 hover:before:origin-left hover:before:scale-x-100"
+                  >
+                    <a href="/">Calendar</a>
+                    <CalendarRange />
+                  </li>
+                  <li
+                    className="relative flex items-center gap-1 before:absolute before:bottom-0 before:left-0 before:h-[2px]
+                   before:w-full before:origin-right before:scale-x-0 before:bg-white before:transition-transform before:duration-150 before:content-['']
+                    hover:text-gray-100 hover:before:origin-left hover:before:scale-x-100"
+                  >
+                    <a href="/">Tasks</a>
+                    <ListChecks />
+                  </li>
+                </ul>
+              </nav>
+            </header>
+            <main className="p-4">{children}</main>
+          </MantineProvider>
         </TRPCReactProvider>
       </body>
     </html>
