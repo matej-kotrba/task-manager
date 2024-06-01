@@ -1,13 +1,10 @@
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "~/styles/globals.css";
-import { CalendarRange, ListChecks } from "lucide-react";
-
 import { Inter } from "next/font/google";
-
 import { TRPCReactProvider } from "~/trpc/react";
-
 import { createTheme, MantineProvider } from "@mantine/core";
+import { navigationLinks } from "~/utils/constants";
 
 const theme = createTheme({
   /** Put your mantine theme override here */
@@ -36,23 +33,18 @@ export default function RootLayout({
           <MantineProvider theme={theme}>
             <header>
               <nav className="bg-blue-500 px-8 py-4">
-                <ul className="flex gap-4 text-2xl font-medium text-white">
-                  <li
-                    className="relative flex items-center gap-1 before:absolute before:bottom-0 before:left-0 before:h-[2px]
-                   before:w-full before:origin-right before:scale-x-0 before:bg-white before:transition-transform before:duration-150 before:content-['']
-                    hover:text-gray-100 hover:before:origin-left hover:before:scale-x-100"
-                  >
-                    <a href="/">Calendar</a>
-                    <CalendarRange />
-                  </li>
-                  <li
-                    className="relative flex items-center gap-1 before:absolute before:bottom-0 before:left-0 before:h-[2px]
-                   before:w-full before:origin-right before:scale-x-0 before:bg-white before:transition-transform before:duration-150 before:content-['']
-                    hover:text-gray-100 hover:before:origin-left hover:before:scale-x-100"
-                  >
-                    <a href="/">Tasks</a>
-                    <ListChecks />
-                  </li>
+                <ul className="flex gap-6 text-2xl font-medium text-white">
+                  {Object.values(navigationLinks).map(
+                    ({ icon, link, name }) => {
+                      return (
+                        <li key={link}>
+                          <a href={link} className="flex items-center gap-1">
+                            {name} {icon}
+                          </a>
+                        </li>
+                      );
+                    },
+                  )}
                 </ul>
               </nav>
             </header>

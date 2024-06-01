@@ -4,6 +4,7 @@ import {
   date,
   index,
   integer,
+  pgEnum,
   pgTableCreator,
   primaryKey,
   serial,
@@ -49,6 +50,31 @@ export const task = createTable("task", {
   isCompleted: boolean("completed").default(false),
   scheduledFinishedDate: date("scheduledFinishedDate").notNull(),
   scheduledFinishedTime: time("scheduledFinishedTime").notNull(),
+})
+
+
+export const weeker = createTable("weeker", {
+  id: serial("id").primaryKey(),
+})
+
+export const weekerDaysEnum = pgEnum("day", [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+]);
+
+export const weeker_task = createTable("weeker_task", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  day: weekerDaysEnum("day"),
+  order: integer("order"),
+  description: varchar("description", { length: 510 }),
+
+  weeker_id: integer("id").references(() => weeker.id)
 })
 
 export const users = createTable("user", {

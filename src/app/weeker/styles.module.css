@@ -1,0 +1,9 @@
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  -webkit-text-stroke: 1px rgb(0, 123, 255);
+  position: relative;
+  width: fit-content;
+  isolation: isolate;
+  color: transparent;
+}
