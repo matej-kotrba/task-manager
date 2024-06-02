@@ -52,11 +52,6 @@ export const task = createTable("task", {
   scheduledFinishedTime: time("scheduledFinishedTime").notNull(),
 })
 
-
-export const weeker = createTable("weeker", {
-  id: serial("id").primaryKey(),
-})
-
 export const weekerDaysEnum = pgEnum("day", [
   "monday",
   "tuesday",
@@ -70,11 +65,9 @@ export const weekerDaysEnum = pgEnum("day", [
 export const weeker_task = createTable("weeker_task", {
   id: serial("id").primaryKey(),
   title: varchar("title", { length: 255 }).notNull(),
-  day: weekerDaysEnum("day"),
+  day: weekerDaysEnum("day").notNull(),
   order: integer("order"),
   description: varchar("description", { length: 510 }),
-
-  weeker_id: integer("id").references(() => weeker.id)
 })
 
 export const users = createTable("user", {

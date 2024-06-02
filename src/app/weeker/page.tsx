@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 import styles from "./styles.module.css";
 import {
   Button,
+  type ComboboxItem,
   Modal,
   Select,
   Space,
@@ -11,15 +12,40 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { useRef } from "react";
+import { useFormState, useFormStatus } from "react-dom";
+import { createNewWeekerTask, type ReturnState } from "~/actions/weekerActions";
+import { hasLength, useForm } from "@mantine/form";
 
-const days = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
+const days: ComboboxItem[] = [
+  {
+    label: "Monday",
+    value: "monday",
+  },
+  {
+    label: "Tuesday",
+    value: "tuesday",
+  },
+  {
+    label: "Wednesday",
+    value: "wednesday",
+  },
+  {
+    label: "Thursday",
+    value: "thursday",
+  },
+  {
+    label: "Friday",
+    value: "friday",
+  },
+  {
+    label: "Saturday",
+    value: "saturday",
+  },
+  {
+    label: "Sunday",
+    value: "sunday",
+  },
 ];
 
 const randomActivities: { title: string; description: string }[] = [
@@ -65,44 +91,65 @@ const randomActivities: { title: string; description: string }[] = [
   },
 ];
 
+const initialState: ReturnState = {
+  success: false,
+  errors: [],
+};
+
 export default function WeekerPage() {
   const [opened, { open, close }] = useDisclosure(false);
+  const [state, formAction] = useFormState(createNewWeekerTask, initialState);
+  const form = useForm({
+    mode: "uncontrolled",
+    validate: {
+      title: hasLength(
+        { min: 1, max: 255 },
+        "Title has to be between 1 and 255 characters",
+      ),
+    },
+  });
+
+  const createNewWeekerTaskForm = useRef(null);
 
   const randomActivity =
     randomActivities[Math.floor(Math.random() * randomActivities.length)];
 
   return (
     <>
-      <Modal
-        opened={opened}
-        onClose={close}
-        title="Create new activity"
-        onSubmit={(e) => {
-          console.log(e);
-        }}
-      >
-        <Select
-          maxDropdownHeight={1000}
-          placeholder="Selected day"
-          data={days}
-        />
-        <Space h="sm" />
-        <TextInput
-          label="Name of the activity"
-          placeholder={randomActivity?.title}
-        />
-        <Space h="sm" />
-        <Textarea
-          label="Description of the activity"
-          placeholder={randomActivity?.description}
-        />
-        <Space h="xl" />
-        <div className="flex justify-end gap-2">
-          <Button color="red" variant="outline" onClick={close}>
-            Cancel
-          </Button>
-          <Button>Create</Button>
-        </div>
+      <Modal opened={opened} onClose={close} title="Create new activity">
+        <form ref={createNewWeekerTaskForm} action={formAction}>
+          <Select
+            label="Select a day of the activity"
+            maxDropdownHeight={1000}
+            placeholder="Selected day"
+            data={days}
+            name="day"
+            required
+          />
+          <Space h="sm" />
+          <TextInput
+            label="Name of the activity"
+            placeholder={randomActivity?.title}
+            name="title"
+            required
+          />
+          <Space h="sm" />
+          <Textarea
+            label="Description of the activity"
+            placeholder={randomActivity?.description}
+            rows={5}
+            name="description"
+          />
+          <Space h="xl" />
+          <div className="flex justify-end gap-2">
+            <Button color="red" variant="outline" onClick={close}>
+              Cancel
+            </Button>
+            <Button type="submit" loading={false}>
+              Create
+            </Button>
+          </div>
+        </form>
       </Modal>
       <div className="mb-4 flex justify-end">
         <Button type="button" rightSection={<Plus />} onClick={open}>
