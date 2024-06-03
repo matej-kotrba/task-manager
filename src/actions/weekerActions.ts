@@ -1,6 +1,6 @@
 "use server"
 
-import type { ZodIssue } from "zod";
+import type { z, ZodIssue } from "zod";
 import { db } from "~/server/db"
 import { weeker_task } from "~/server/db/schema"
 import { createWeekerTaskSchema } from "~/utils/validators"
@@ -10,18 +10,14 @@ export type ReturnState = {
   errors: ZodIssue[];
 };
 
-export async function createNewWeekerTask(state: ReturnState, formData: FormData): Promise<ReturnState> {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-  return {
-    success: true,
-    errors: []
-  }
+export type CreateInsertWeekerTask = z.infer<typeof createWeekerTaskSchema>
+
+export async function createNewWeekerTask(formData: FormData): Promise<ReturnState> {
   const data = Object.fromEntries(formData)
 
   const validated = createWeekerTaskSchema.safeParse(data)
 
   if (validated.success === false) {
-    console.error(validated.error.errors)
     return {
       success: false,
       errors: validated.error.errors

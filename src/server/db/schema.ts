@@ -52,7 +52,7 @@ export const task = createTable("task", {
   scheduledFinishedTime: time("scheduledFinishedTime").notNull(),
 })
 
-export const weekerDaysEnum = pgEnum("day", [
+const weekerDaysEnum = pgEnum("day", [
   "monday",
   "tuesday",
   "wednesday",
@@ -61,6 +61,8 @@ export const weekerDaysEnum = pgEnum("day", [
   "saturday",
   "sunday",
 ]);
+
+export const weekerDaysEnumValues = weekerDaysEnum.enumValues
 
 export const weeker_task = createTable("weeker_task", {
   id: serial("id").primaryKey(),
