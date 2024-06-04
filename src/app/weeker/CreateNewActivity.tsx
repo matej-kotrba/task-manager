@@ -20,6 +20,7 @@ import {
 import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { createWeekerTaskSchema } from "~/utils/validators";
+import { useRouter } from "next/navigation";
 
 const days: ComboboxItem[] = [
   {
@@ -98,7 +99,7 @@ const randomActivities: { title: string; description: string }[] = [
 export default function WeekerPage() {
   const form = useForm<CreateInsertWeekerTask>({
     mode: "uncontrolled",
-    // validate: zodResolver(createWeekerTaskSchema),
+    validate: zodResolver(createWeekerTaskSchema),
   });
 
   const [opened, { open, close }] = useDisclosure(false);
@@ -115,10 +116,13 @@ export default function WeekerPage() {
     [],
   );
 
+  const router = useRouter();
+
   async function handleSubmit(formData: FormData) {
     const response = await createNewWeekerTask(formData);
     if (response.success === true) {
       closeForm();
+      router.refresh();
     }
   }
 

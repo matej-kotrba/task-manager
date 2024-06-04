@@ -1,46 +1,44 @@
-import styles from "./styles.module.css";
 import CreateNewActivity from "./CreateNewActivity";
 import { db } from "~/server/db";
-import { eq } from "drizzle-orm";
-import { weeker_task, weekerDaysEnumValues } from "~/server/db/schema";
+import { weeker_task, type weekerDaysEnumValues } from "~/server/db/schema";
+import Day from "./Day";
 
-type DayProps = {
-  name: (typeof weekerDaysEnumValues)[number];
-};
+export default async function Page() {
+  const activities = await db.select().from(weeker_task);
 
-export default function Page() {
   return (
     <>
       <CreateNewActivity />
       <div className="flex flex-col gap-2">
-        <Day name="monday" />
-        <Day name="tuesday" />
-        <Day name="wednesday" />
-        <Day name="thursday" />
-        <Day name="friday" />
-        <Day name="saturday" />
-        <Day name="sunday" />
+        <Day
+          name="monday"
+          activities={activities.filter((ac) => ac.day === "monday")}
+        />
+        <Day
+          name="tuesday"
+          activities={activities.filter((ac) => ac.day === "tuesday")}
+        />
+        <Day
+          name="wednesday"
+          activities={activities.filter((ac) => ac.day === "wednesday")}
+        />
+        <Day
+          name="thursday"
+          activities={activities.filter((ac) => ac.day === "thursday")}
+        />
+        <Day
+          name="friday"
+          activities={activities.filter((ac) => ac.day === "friday")}
+        />
+        <Day
+          name="saturday"
+          activities={activities.filter((ac) => ac.day === "saturday")}
+        />
+        <Day
+          name="sunday"
+          activities={activities.filter((ac) => ac.day === "sunday")}
+        />
       </div>
     </>
   );
-}
-
-async function Day({ name }: DayProps) {
-  const activities = await db
-    .select()
-    .from(weeker_task)
-    .where(eq(weeker_task.day, name));
-
-  return (
-    <div className="rounded-lg border p-2">
-      <DayTitle name={name} />
-      {activities.map((activity) => {
-        return <div key={activity.id}>{activity.title}</div>;
-      })}
-    </div>
-  );
-}
-
-function DayTitle({ name }: { name: string }) {
-  return <h3 className={styles.title}>{name}</h3>;
 }

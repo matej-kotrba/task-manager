@@ -1,7 +1,7 @@
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "~/styles/globals.css";
-import { Inter } from "next/font/google";
+import { Cinzel, Inter } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 import { createTheme, MantineProvider } from "@mantine/core";
 import { navigationLinks } from "~/utils/constants";
@@ -13,6 +13,11 @@ const theme = createTheme({
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
+});
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  variable: "--font-cinzel",
 });
 
 export const metadata = {
@@ -28,7 +33,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>
+      <body className={`font-sans ${inter.variable} ${cinzel.variable}`}>
         <TRPCReactProvider>
           <MantineProvider theme={theme}>
             <header>
