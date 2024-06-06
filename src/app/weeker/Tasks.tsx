@@ -3,6 +3,7 @@
 import type { WeekerTask } from "~/types/weeker";
 import Day from "./Day";
 import { useState } from "react";
+import FinishingWeek from "./FinishingWeek";
 
 export default function Tasks({
   activitiesProps,
@@ -22,43 +23,62 @@ export default function Tasks({
     });
   }
 
+  function resetActivities() {
+    setActivities((old) =>
+      old.map((ac) => {
+        localStorage.removeItem(`weeker_task_${ac.id}`);
+
+        return {
+          ...ac,
+          completed: false,
+        };
+      }),
+    );
+  }
+
   return (
-    <div className="flex flex-col gap-2">
-      <Day
-        name="monday"
-        activities={activities.filter((ac) => ac.day === "monday")}
-        changeActivityCompletion={changeActivityCompletion}
+    <>
+      <FinishingWeek
+        activities={activities}
+        resetActivities={resetActivities}
       />
-      <Day
-        name="tuesday"
-        activities={activities.filter((ac) => ac.day === "tuesday")}
-        changeActivityCompletion={changeActivityCompletion}
-      />
-      <Day
-        name="wednesday"
-        activities={activities.filter((ac) => ac.day === "wednesday")}
-        changeActivityCompletion={changeActivityCompletion}
-      />
-      <Day
-        name="thursday"
-        activities={activities.filter((ac) => ac.day === "thursday")}
-        changeActivityCompletion={changeActivityCompletion}
-      />
-      <Day
-        name="friday"
-        activities={activities.filter((ac) => ac.day === "friday")}
-        changeActivityCompletion={changeActivityCompletion}
-      />
-      <Day
-        name="saturday"
-        activities={activities.filter((ac) => ac.day === "saturday")}
-        changeActivityCompletion={changeActivityCompletion}
-      />
-      <Day
-        name="sunday"
-        activities={activities.filter((ac) => ac.day === "sunday")}
-        changeActivityCompletion={changeActivityCompletion}
-      />
-    </div>
+      <div className="flex flex-col gap-2">
+        <Day
+          name="monday"
+          activities={activities.filter((ac) => ac.day === "monday")}
+          changeActivityCompletion={changeActivityCompletion}
+        />
+        <Day
+          name="tuesday"
+          activities={activities.filter((ac) => ac.day === "tuesday")}
+          changeActivityCompletion={changeActivityCompletion}
+        />
+        <Day
+          name="wednesday"
+          activities={activities.filter((ac) => ac.day === "wednesday")}
+          changeActivityCompletion={changeActivityCompletion}
+        />
+        <Day
+          name="thursday"
+          activities={activities.filter((ac) => ac.day === "thursday")}
+          changeActivityCompletion={changeActivityCompletion}
+        />
+        <Day
+          name="friday"
+          activities={activities.filter((ac) => ac.day === "friday")}
+          changeActivityCompletion={changeActivityCompletion}
+        />
+        <Day
+          name="saturday"
+          activities={activities.filter((ac) => ac.day === "saturday")}
+          changeActivityCompletion={changeActivityCompletion}
+        />
+        <Day
+          name="sunday"
+          activities={activities.filter((ac) => ac.day === "sunday")}
+          changeActivityCompletion={changeActivityCompletion}
+        />
+      </div>
+    </>
   );
 }
