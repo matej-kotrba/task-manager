@@ -7,24 +7,16 @@ import type { WeekerTaskDays, WeekerTask } from "~/types/weeker";
 
 type DayProps = {
   name: WeekerTaskDays[number];
-  activitiesProps: WeekerTask[];
+  activities: (WeekerTask & { completed: boolean })[];
+  changeActivityCompletion: (id: number, completed: boolean) => void;
 };
 
-export default function Day({ name, activitiesProps }: DayProps) {
-  const totalActivities = activitiesProps.length;
-
-  const [activities, setActivities] = useState<
-    (WeekerTask & { completed: boolean })[]
-  >(activitiesProps.map((activity) => ({ ...activity, completed: false })));
-
-  function changeActivityCompletion(id: number, completed: boolean) {
-    setActivities((old) => {
-      const activity = old.find((ac) => ac.id === id);
-      if (!activity) return old;
-      activity.completed = completed;
-      return [...old];
-    });
-  }
+export default function Day({
+  name,
+  activities,
+  changeActivityCompletion,
+}: DayProps) {
+  const totalActivities = activities.length;
 
   return (
     <div className="rounded-lg border p-2">
